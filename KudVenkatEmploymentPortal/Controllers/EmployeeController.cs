@@ -29,6 +29,7 @@ namespace KudVenkatEmploymentPortal.Controllers
 
         public IActionResult Details(int id)
         {
+            throw new Exception("Testing exceptionfile");
             var employee = _employeeRepository.GetEmployee(id);
             return View(employee);
         }

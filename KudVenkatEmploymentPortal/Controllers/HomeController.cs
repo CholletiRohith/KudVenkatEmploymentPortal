@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using KudVenkatEmploymentPortal.Models;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace KudVenkatEmploymentPortal.Controllers
 {
@@ -27,11 +28,36 @@ namespace KudVenkatEmploymentPortal.Controllers
         {
             return View();
         }
-
+        [Route("Home/Error/{request}")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int request)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var errorResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+            var exceptionResult = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            ErrorViewModel errorViewModel = null;
+            switch (request)
+            {
+                case 404:
+                     errorViewModel = new ErrorViewModel
+                    {
+                        RequestId = errorResult.OriginalPath,
+                        Message = "Requested resource not available"
+
+                    };
+                    _logger.LogError($"Page not found for the  requested path: {errorResult.OriginalPath}");
+            break;
+                default:
+                    errorViewModel = new ErrorViewModel
+                    {
+                        RequestId = exceptionResult.Path,
+                        Message = "Default"
+
+                    };
+                    _logger.LogError($"{exceptionResult.Error} and requested path: {exceptionResult.Path}");
+                    break;
+
+            }
+            return View(errorViewModel);
         }
     }
 }
