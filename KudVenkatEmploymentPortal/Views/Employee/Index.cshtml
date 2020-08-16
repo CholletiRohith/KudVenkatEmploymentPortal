@@ -1,0 +1,32 @@
+﻿@model IEnumerable<KudVenkatEmploymentPortal.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+    
+        <div class="card-deck">
+            @foreach (var item in Model)
+            {
+                var imagepath = "~/images/" + (item.PhotoPath ?? "DSC_0142.JPG");
+
+            <div class="card m-3 emp-index">
+                <div class="card-header emp-name">
+                    <h1>@item.Name</h1>
+                </div>
+                <img class="card-img-top emp-image" asp-append-version="true" src="@imagepath" />
+                <div class="card-body text-center">
+                    <a asp-action="Edit" asp-controller="Employee" asp-route-id="@item.ID" class="btn btn-primary m-1"> Edit </a>
+                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary m-1">View</a>
+                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary m-1">Delete</a>
+                </div>
+            </div>
+    }
+            </div>
+        

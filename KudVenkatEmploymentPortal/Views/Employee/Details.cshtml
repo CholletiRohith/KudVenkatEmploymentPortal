@@ -1,0 +1,27 @@
+﻿@model KudVenkatEmploymentPortal.Models.Employee
+
+@{
+    ViewData["Title"] = "Details";
+    var imagepath = !string.IsNullOrEmpty(Model.PhotoPath) ? "~/images/" + Model.PhotoPath : "DSC_0142.JPG";
+    }
+
+
+<div class="row justify-content-center m-3">
+    <div class="col-sm-8">
+        <div class="card">
+            <div class="card-header">
+                <h1>@Model.Name</h1>
+            </div>
+            <div class="card-body text-center">
+                <img class="card-img-top emp-image" asp-append-version="true" src="@imagepath" />
+                <h4>Employee Email: @Model.Email</h4>
+                <h4>Employee Department: @Model.Dept</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-footer text-center">
+    <a asp-action="Edit" class="btn-group-toggle">Edit</a>
+    <a asp-action="Index" class="btn-secondary">Back to List</a>
+</div>
